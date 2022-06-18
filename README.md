@@ -15,6 +15,6 @@
                  '''!!!!!!!!'''
 ```
 
-### 🧛 CASTLEVANIA
+# 🧛 CASTLEVANIA
 
-## TRULY ANONYMOUS MESSAGING API
+## 🔐 TRULY ANONYMOUS MESSAGING API
