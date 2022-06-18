@@ -29,6 +29,9 @@ func commonMiddleware(next http.Handler) http.Handler {
 }
 
 func main() {
+
+	logging.Motd()
+
 	// Using 64 instead of 32 cause stupid strconv doesn't have an uint32 formatter
 	var port = flag.Uint64("p", 80, "Port used for the web service")
 

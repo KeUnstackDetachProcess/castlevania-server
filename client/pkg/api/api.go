@@ -11,20 +11,28 @@ import (
 type User struct {
 }
 
-type PatchShield struct {
+type LocalReport struct {
+	onion      bool
+	corruption bool
 }
 
-const (
-	CONNECT_REFUSE = ""
-	CONNECT_ERROR  = ""
-)
+type RemoteReport struct {
+	weak       bool
+	encryption bool
+	corruption bool
+}
+
+type SecurityReport struct {
+	local  LocalReport
+	remote RemoteReport
+}
 
 func Connect(endpoint string) error {
 
 	return nil
 }
 
-func (state *PatchShield) MakeSafetyReport() {
+func (sr *SecurityReport) MakeSecurityReport() {
 
 	// Open current executable file
 	f, err := os.Open(os.Args[0])
@@ -44,12 +52,20 @@ func (state *PatchShield) MakeSafetyReport() {
 
 	// Validate checksum
 	if value != CLIENT_CHECKSUM {
-		log.Warning("Client checksum is different, the software could be compromised! Be careful!")
+		sr.local.corruption = true
 	}
 
-	// Get server checksum and validate it
+	// -- temporarely hard-coded --
 
-	return true
+	// Ensure client onion routing is enabled / works properly
+	sr.local.onion = true
+
+	// Get server checksum and validate it
+	sr.remote.corruption = false
+	// Get server encryption (uses E2E) state
+	sr.remote.encryption = false
+	// Get server weakness state (compares default db psw hash)
+	sr.remote.weak = false
 }
 
 func (user User) CreateNewUser() User {

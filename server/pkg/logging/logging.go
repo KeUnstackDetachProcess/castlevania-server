@@ -9,7 +9,7 @@ import (
 	"github.com/fatih/color"
 )
 
-const tag = "[CASTLEVANIA]"
+const tag = " [CASTLEVANIA]"
 
 func Motd() {
 
@@ -18,28 +18,32 @@ func Motd() {
 
 	g.Println(
 		`
-                   .d:....:h.
-                .:!!!!!!!!!!!!:.
-           .::!!!!!!!!!!!!!!!!!!!!::.
-    ..::!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!::..
-..'''. . eeee .... ... '~' ... .... eeee . .'''..
- '!h:. $ $$$$ $$$$ $$$$b d$$$$ $$$$ $$$$ $ .:h!'
-  '!!!!. '$$$ '$$' '$$$' '$$$' '$$' $$$'.!!!!!'
-    '!!!!.'$$ .   .  ......   .   . $$'.!!!!'
-     '!!!! $$ !!!!!!!!!!!!!!!!!!!!! $$ !!!!'
-       '!!h ' !!!!!!!!!!!!!!!!!!!!! ' d!!'
-         '!h !!!!!!!!!!!!!!!!!!!!!!! d!'
-		  ''!!!!!!!!!!!!!!!!!!!!!!!!''
-             ''!!!!!!!!!!!!!!!!!!''
-                 '''!!!!!!!!'''
-
-	 [  C  A  S  T  L  E  V  A  N  I  A ]
+                    .d:....:h.
+                 .:!!!!!!!!!!!!:.
+            .::!!!!!!!!!!!!!!!!!!!!::.
+     ..::!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!::..
+ ..'''. . eeee .... ... '~' ... .... eeee . .'''..
+  '!h:. $ $$$$ $$$$ $$$$b d$$$$ $$$$ $$$$ $ .:h!'
+   '!!!!. '$$$ '$$' '$$$' '$$$' '$$' $$$'.!!!!!'
+     '!!!!.'$$ .   .  ......   .   . $$'.!!!!'
+      '!!!! $$ !!!!!!!!!!!!!!!!!!!!! $$ !!!!'
+        '!!h ' !!!!!!!!!!!!!!!!!!!!! ' d!!'
+          '!h !!!!!!!!!!!!!!!!!!!!!!! d!'
+           ''!!!!!!!!!!!!!!!!!!!!!!!!''
+              ''!!!!!!!!!!!!!!!!!!''
+                  '''!!!!!!!!'''
 `)
-	g.Print("    Author: ")
-	r.Print("github.com/CycloneOrg\n")
+	g.Print(" Project: ")
+	r.Print("castlevania\n")
+	g.Print(" Description: ")
+	r.Print("castlevania is an advanced, fast, reliable and truly anonymous E2E messaging API\n")
+	g.Print(" Author: ")
+	r.Print("https://github.com/common-dracula\n")
+	g.Print(" Repository: ")
+	r.Print("https://github.com/common-dracula/castlevania\n\n")
 	r.Print(tag)
 	fmt.Printf(" Welcome, ")
-	r.Print(os.Getenv("USERNAME"))
+	r.Print(os.Getenv("USERNAME") + "\n")
 }
 
 func getCurrentTime() string {
