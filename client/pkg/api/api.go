@@ -11,10 +11,7 @@ import (
 type User struct {
 }
 
-type Castlevania interface {
-	Connect()
-	EnsureSafety()
-	CreateNewUser()
+type PatchShield struct {
 }
 
 const (
@@ -27,7 +24,7 @@ func Connect(endpoint string) error {
 	return nil
 }
 
-func EnsureSafety() {
+func (state *PatchShield) MakeSafetyReport() {
 
 	// Open current executable file
 	f, err := os.Open(os.Args[0])
@@ -51,6 +48,8 @@ func EnsureSafety() {
 	}
 
 	// Get server checksum and validate it
+
+	return true
 }
 
 func (user User) CreateNewUser() User {
