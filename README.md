@@ -1,7 +1,7 @@
 </br>
-<div align="center" style="text-align: center; font-size: 35px;">
+<div align="center" style="font-size: 40px; font-weight: bold;">
   <img src="assets/img/banner.png" alt="banner" height="250"/>
-  **🏰 CASTLEVANIA 🏰**
+  🏰 CASTLEVANIA 🏰
 </div>
 </br></br>
 
