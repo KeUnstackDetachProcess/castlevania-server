@@ -2,7 +2,7 @@ package main
 
 import (
 	"cv-server/pkg/api"
-	"cv-server/pkg/logging"
+	"cv-server/pkg/log"
 	"flag"
 	"fmt"
 	"net/http"
@@ -30,61 +30,69 @@ func commonMiddleware(next http.Handler) http.Handler {
 
 func main() {
 
-	logging.Motd()
+	// print castelvania motd
+	log.Motd()
 
-	// Using 64 instead of 32 cause stupid strconv doesn't have an uint32 formatter
+	// using 64 instead of 32 cause stupid strconv doesn't have an uint32 formatter
 	var port = flag.Uint64("p", 80, "Port used for the web service")
+	if *port > 65535 {
+		log.Error("Entered port is too large for the TCP protocol, please enter any port below 65535 or leave default (80)")
+	}
 
 	router = mux.NewRouter()
 	router.Use(commonMiddleware)
 
-	// Load environment variables (db configuration)
-	logging.Info("Loading .env file")
+	// load environment variables (db configuration)
+	log.Info("Loading .env file")
 	err = godotenv.Load()
 	if err != nil {
-		logging.Error("Error loading .env file")
+		log.Error("An error occurred while attempting to load .env file")
 	}
 
-	// Get database configuration from environment
+	// get database configuration from environment
 	DBUSER := os.Getenv("DBUSER")
 	DBPASS := os.Getenv("DBPASS")
-	DBADDRESS := os.Getenv("DBADDRESS")
+	DBADDY := os.Getenv("DBADDRESS")
 	DBPORT := os.Getenv("DBPORT")
 	DBNAME := os.Getenv("DBNAME")
 
-	// Initialize MySQL Database connection
-	logging.Info("Estabilishing MySQL connection")
-	var dsn = fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8mb4&parseTime=True&loc=Local", DBUSER, DBPASS, DBADDRESS, DBPORT, DBNAME)
+	// initialize MySQL database connection
+	log.Info("Estabilishing MySQL connection")
+	var dsn = fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8mb4&parseTime=True&loc=Local",
+		DBUSER, DBPASS, DBADDY, DBPORT, DBNAME)
+
 	db, err = gorm.Open(mysql.Open(dsn), &gorm.Config{})
 	if err != nil {
-		logging.Error(err.Error())
+		log.Error(err.Error())
 	}
 
-	// Migrate tables
-	logging.Info("Setupping routes handling")
+	// migrate tables
+	log.Info("Setupping routes handling")
 	db.AutoMigrate()
 
-	// Configure webserver routes
-	logging.Info("Setupping routes handling")
+	// configure webserver routes
+	log.Info("Setupping routes handling")
+	// configure user routes
+	api.UserSetupRoutes(&router)
 
-	// Handle all users related actions
-	router.HandleFunc("/api/user", api.UserCreate).Methods("POST")
+	// retrieve all user friends
+	router.HandleFunc("/api/user/#:tag/friend", func(w http.ResponseWriter, r *http.Request) {}).Methods("POST")
+	// retrieve a specific user friend
+	router.HandleFunc("/api/user/#:tag/friend/:id", func(w http.ResponseWriter, r *http.Request) {}).Methods("POST")
+	// remove an user from friends
+	router.HandleFunc("/api/user/#:tag/friend/:id/delete", func(w http.ResponseWriter, r *http.Request) {}).Methods("POST")
 
-	// Handle all P2P & GC requests
-	router.HandleFunc("/api/encrypted/p2p/connect", api.UserCreate).Methods("POST")
-	router.HandleFunc("/api/encrypted/gc/connect", api.UserCreate).Methods("POST")
-
-	router.HandleFunc("/api/E2EE/chat/users/list", api.UserCreate).Methods("POST")
-	router.HandleFunc("/api/E2EE/chat/users/ban", api.UserCreate).Methods("POST")
-	router.HandleFunc("/api/E2EE/chat/users/add", api.UserCreate).Methods("POST")
-
-	router.HandleFunc("/api/p2p/request", api.UserCreate).Methods("POST")
-	router.HandleFunc("/api/chat/", api.UserCreate).Methods("POST")
+	// handle group actions
+	router.HandleFunc("/api/group/create", func(w http.ResponseWriter, r *http.Request) {}).Methods("POST")
+	router.HandleFunc("/api/user/delete", func(w http.ResponseWriter, r *http.Request) {}).Methods("POST")
+	router.HandleFunc("/api/user/edit", func(w http.ResponseWriter, r *http.Request) {}).Methods("POST")
+	router.HandleFunc("/api/user/:id", func(w http.ResponseWriter, r *http.Request) {}).Methods("GET")
+	router.HandleFunc("/api/user/", func(w http.ResponseWriter, r *http.Request) {}).Methods("GET")
 
 	// Start HTTP listener
-	logging.Info("Starting http webserver")
+	log.Info("Starting http webserver")
 	if err := http.ListenAndServe(":"+strconv.FormatUint(*port, 10), router); err != nil {
-		logging.Error(err.Error())
+		log.Error(err.Error())
 	}
 
 	os.Exit(1)
