@@ -14,7 +14,7 @@ const tag = "[CASTLEVANIA]"
 func Motd() {
 
 	r := color.New(color.FgRed)
-	g := color.New(color.FgHiBlack)
+	g := color.New(color.FgGreen)
 
 	g.Println(
 		`

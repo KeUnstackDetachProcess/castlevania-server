@@ -67,20 +67,19 @@ func main() {
 	// Configure webserver routes
 	logging.Info("Setupping routes handling")
 
-	// Handle node users
-	router.HandleFunc("/api/user/create", api.UserCreate).Methods("POST")
-	router.HandleFunc("/api/user/update", api.UserCreate).Methods("POST")
+	// Handle all users related actions
+	router.HandleFunc("/api/user", api.UserCreate).Methods("POST")
 
 	// Handle all P2P & GC requests
-	router.HandleFunc("/api/E2EE/p2p", api.UserCreate).Methods("POST")
-	router.HandleFunc("/api/E2EE/chat", api.UserCreate).Methods("POST")
+	router.HandleFunc("/api/encrypted/p2p/connect", api.UserCreate).Methods("POST")
+	router.HandleFunc("/api/encrypted/gc/connect", api.UserCreate).Methods("POST")
 
 	router.HandleFunc("/api/E2EE/chat/users/list", api.UserCreate).Methods("POST")
 	router.HandleFunc("/api/E2EE/chat/users/ban", api.UserCreate).Methods("POST")
 	router.HandleFunc("/api/E2EE/chat/users/add", api.UserCreate).Methods("POST")
 
-	router.HandleFunc("/api/p2p", api.UserCreate).Methods("POST")
-	router.HandleFunc("/api/chat", api.UserCreate).Methods("POST")
+	router.HandleFunc("/api/p2p/request", api.UserCreate).Methods("POST")
+	router.HandleFunc("/api/chat/", api.UserCreate).Methods("POST")
 
 	// Start HTTP listener
 	logging.Info("Starting http webserver")
