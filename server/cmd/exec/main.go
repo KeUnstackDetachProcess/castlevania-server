@@ -1,7 +1,6 @@
 package main
 
 import (
-	"cv-server/pkg/api"
 	"cv-server/pkg/log"
 	"flag"
 	"fmt"
@@ -72,15 +71,8 @@ func main() {
 
 	// configure webserver routes
 	log.Info("Setupping routes handling")
-	// configure user routes
-	api.UserSetupRoutes(&router)
-
-	// retrieve all user friends
-	router.HandleFunc("/api/user/#:tag/friend", func(w http.ResponseWriter, r *http.Request) {}).Methods("POST")
-	// retrieve a specific user friend
-	router.HandleFunc("/api/user/#:tag/friend/:id", func(w http.ResponseWriter, r *http.Request) {}).Methods("POST")
-	// remove an user from friends
-	router.HandleFunc("/api/user/#:tag/friend/:id/delete", func(w http.ResponseWriter, r *http.Request) {}).Methods("POST")
+	InitializeUsersRoutes(router)
+	InitializeFriendsRoutes(router)
 
 	// handle group actions
 	router.HandleFunc("/api/group/create", func(w http.ResponseWriter, r *http.Request) {}).Methods("POST")
