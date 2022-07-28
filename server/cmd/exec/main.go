@@ -71,6 +71,7 @@ func main() {
 
 	// configure webserver routes
 	log.Info("Setupping routes handling")
+	InitializeSessionRoutes(router)
 	InitializeUsersRoutes(router)
 	InitializeFriendsRoutes(router)
 
